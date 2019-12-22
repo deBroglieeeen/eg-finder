@@ -1,6 +1,18 @@
 // モジュールのインポート
 const server = require("express")();
-import { Client, middleware } from "@line/bot-sdk"; // Messaging APIのSDKをインポート
+const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
+// -----------------------------------------------------------------------------
+// パラメータ設定
+const line_config = {
+    channelAccessToken: process.env.LINE_ACCESS_TOKEN,
+    channelSecret: process.env.LINE_CHANNEL_SECRET
+};
+
+// -----------------------------------------------------------------------------
+// Webサーバー設定
+server.listen(process.env.PORT || 3000);
+
+const bot = new Client(line_config);
 
 // -----------------------------------------------------------------------------
 let example_sentences = ""
@@ -47,20 +59,8 @@ var ce_request = request(options, function (res) {
 });
 
 // -----------------------------------------------------------------------------
-// パラメータ設定
-const line_config = {
-    channelAccessToken: process.env.LINE_ACCESS_TOKEN,
-    channelSecret: process.env.LINE_CHANNEL_SECRET
-};
-
-// -----------------------------------------------------------------------------
-// Webサーバー設定
-server.listen(process.env.PORT || 3000);
-
-const bot = new Client(line_config);
-// -----------------------------------------------------------------------------
 // ルーター設定
-server.post('/bot/webhook', middleware(line_config), (req, res, next) => {
+server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     res.sendStatus(200);
     console.log(req.body);
 
