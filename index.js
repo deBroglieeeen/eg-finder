@@ -5,8 +5,8 @@ import { Client, middleware } from "@line/bot-sdk"; // Messaging APIのSDKをイ
 // -----------------------------------------------------------------------------
 let example_sentences = ""
 // -----------------------------------------------------------------------------
-import { stringify } from "querystring";
-import { request } from "http";
+// import { stringify } from "querystring";
+// import { request } from "http";
 
 var options = {
   "method": "POST",
@@ -74,24 +74,25 @@ server.post('/bot/webhook', middleware(line_config), (req, res, next) => {
                     type: "text",
                     text: "ビルマ語はミャンマーの旧名称でその地域で話されていることばです話者は5000万人ほどいます。"
                 }));
-            }else{
-                ce_request.write(stringify({ approx: 'W',
-                  bitectMatch: 'or',
-                  near: '10',
-                  return: 'html',
-                  seaLanguage: 'burmese',
-                  seaTarget: '',
-                  type: 'bitext',
-                  westernLanguage: 'english',
-                  westernTarget: event.message.text }));
-                ce_request.end().then(()=>{
-                  console.log(example_sentences)
-                  events_processed.push(bot.replyMessage(event.replyToken,{
-                    type: "text",
-                    text: example_sentences
-                  }));
-                });
             }
+            // else{
+            //     ce_request.write(stringify({ approx: 'W',
+            //       bitectMatch: 'or',
+            //       near: '10',
+            //       return: 'html',
+            //       seaLanguage: 'burmese',
+            //       seaTarget: '',
+            //       type: 'bitext',
+            //       westernLanguage: 'english',
+            //       westernTarget: event.message.text }));
+            //     ce_request.end().then(()=>{
+            //       console.log(example_sentences)
+            //       events_processed.push(bot.replyMessage(event.replyToken,{
+            //         type: "text",
+            //         text: example_sentences
+            //       }));
+            //     });
+            // }
         }
     });
     // すべてのイベント処理が終了したら何個のイベントが処理されたか出力。
