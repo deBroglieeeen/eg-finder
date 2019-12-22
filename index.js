@@ -1,3 +1,8 @@
+// モジュールのインポート
+const server = require("express")();
+import { Client, middleware } from "@line/bot-sdk"; // Messaging APIのSDKをインポート
+
+// -----------------------------------------------------------------------------
 let example_sentences = ""
 // -----------------------------------------------------------------------------
 import { stringify } from "querystring";
@@ -40,11 +45,6 @@ var ce_request = request(options, function (res) {
     example_sentences = body.toString()
   });
 });
-
-// -----------------------------------------------------------------------------
-// モジュールのインポート
-const server = require("express")();
-import { Client, middleware } from "@line/bot-sdk"; // Messaging APIのSDKをインポート
 
 // -----------------------------------------------------------------------------
 // パラメータ設定
