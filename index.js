@@ -12,7 +12,7 @@ const line_config = {
 // Webサーバー設定
 server.listen(process.env.PORT || 3000);
 
-const bot = new Client(line_config);
+const bot = new line.Client(line_config);
 
 // -----------------------------------------------------------------------------
 let example_sentences = ""
