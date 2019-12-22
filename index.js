@@ -92,7 +92,8 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 //     text: example_sentences
                 //   }));
                 // });
-                   var request = require("request");
+                   const request = require("request");
+                   const { JSDOM } = require("jsdom")
 
                    var options = { method: 'POST',
                      url: 'http://sealang.net/pm/bitext.pl',
@@ -100,7 +101,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       { 'seaLanguage\t': 'burmese',
                         type: 'bitext',
                         westernLanguage: 'english',
-                        westernTarget: 'flow',
+                        westernTarget: event.message.text,
                         bitextMatch: 'or',
                         near: '10',
                         approx: 'W',
@@ -127,15 +128,28 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         seaTarget: '',
                         type: 'bitext',
                         westernLanguage: 'english',
-                        westernTarget: 'flow' } };
+                        westernTarget: event.message.text } };
 
                    request(options, function (error, response, body) {
                      if (error) throw new Error(error);
-                     console.log(body);
-                     events_processed.push(bot.replyMessage(event.replyToken,{
-                       type: "text",
-                       text: example_sentences
-                     }));
+                     try {
+                      const dom = new JSDOM(body)
+                      const line1 = dom.window.document.querySelector(".cell").children[0].textContent.trim()
+                      const line2 = dom.window.document.querySelector(".cell").children[1].textContent.trim()
+                      events_processed.push(bot.replyMessage(event.replyToken,{
+                        type: "text",
+                        text: line1
+                      }));
+                      events_processed.push(bot.replyMessage(event.replyToken,{
+                        type: "text",
+                        text: line2
+                      }));
+                      console.log(line1)
+                      console.log(line2)
+                     } catch (error) {
+                       console.error(error)
+                     }
+                     //console.log(body);
                    });
 
             }
