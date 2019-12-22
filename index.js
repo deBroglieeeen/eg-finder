@@ -17,46 +17,46 @@ const bot = new line.Client(line_config);
 // -----------------------------------------------------------------------------
 let example_sentences = ""
 // -----------------------------------------------------------------------------
-import { stringify } from "querystring";
-import { request } from "http";
+// import { stringify } from "querystring";
+// import { request } from "http";
 
-var options = {
-  "method": "POST",
-  "hostname": [
-    "sealang",
-    "net"
-  ],
-  "path": [
-    "pm",
-    "bitext.pl"
-  ],
-  "headers": {
-    "Content-Type": "application/x-www-form-urlencoded",
-    "User-Agent": "PostmanRuntime/7.20.1",
-    "Accept": "*/*",
-    "Cache-Control": "no-cache",
-    "Postman-Token": "4700a0e6-91ef-4e95-bc4a-7d39c275166b,0d57394c-ea9a-47c8-bb2c-acf39ce12303",
-    "Host": "sealang.net",
-    "Accept-Encoding": "gzip, deflate",
-    "Content-Length": "129",
-    "Connection": "keep-alive",
-    "cache-control": "no-cache"
-  }
-};
+// var options = {
+//   "method": "POST",
+//   "hostname": [
+//     "sealang",
+//     "net"
+//   ],
+//   "path": [
+//     "pm",
+//     "bitext.pl"
+//   ],
+//   "headers": {
+//     "Content-Type": "application/x-www-form-urlencoded",
+//     "User-Agent": "PostmanRuntime/7.20.1",
+//     "Accept": "*/*",
+//     "Cache-Control": "no-cache",
+//     "Postman-Token": "4700a0e6-91ef-4e95-bc4a-7d39c275166b,0d57394c-ea9a-47c8-bb2c-acf39ce12303",
+//     "Host": "sealang.net",
+//     "Accept-Encoding": "gzip, deflate",
+//     "Content-Length": "129",
+//     "Connection": "keep-alive",
+//     "cache-control": "no-cache"
+//   }
+// };
 
-var ce_request = request(options, function (res) {
-  var chunks = [];
+// var ce_request = request(options, function (res) {
+//   var chunks = [];
 
-  res.on("data", function (chunk) {
-    chunks.push(chunk);
-  });
+//   res.on("data", function (chunk) {
+//     chunks.push(chunk);
+//   });
 
-  res.on("end", function () {
-    var body = Buffer.concat(chunks);
-    console.log(body.toString());
-    example_sentences = body.toString()
-  });
-});
+//   res.on("end", function () {
+//     var body = Buffer.concat(chunks);
+//     console.log(body.toString());
+//     example_sentences = body.toString()
+//   });
+// });
 
 // -----------------------------------------------------------------------------
 // ルーター設定
