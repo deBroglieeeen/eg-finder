@@ -1,7 +1,7 @@
 let example_sentences = ""
 // -----------------------------------------------------------------------------
-var qs = require("querystring");
-var http = require("http");
+import { stringify } from "querystring";
+import { request } from "http";
 
 var options = {
   "method": "POST",
@@ -27,7 +27,7 @@ var options = {
   }
 };
 
-var ce_request = http.request(options, function (res) {
+var ce_request = request(options, function (res) {
   var chunks = [];
 
   res.on("data", function (chunk) {
@@ -44,7 +44,7 @@ var ce_request = http.request(options, function (res) {
 // -----------------------------------------------------------------------------
 // モジュールのインポート
 const server = require("express")();
-const line = require("@line/bot-sdk"); // Messaging APIのSDKをインポート
+import { Client, middleware } from "@line/bot-sdk"; // Messaging APIのSDKをインポート
 
 // -----------------------------------------------------------------------------
 // パラメータ設定
@@ -57,10 +57,10 @@ const line_config = {
 // Webサーバー設定
 server.listen(process.env.PORT || 3000);
 
-const bot = new line.Client(line_config);
+const bot = new Client(line_config);
 // -----------------------------------------------------------------------------
 // ルーター設定
-server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
+server.post('/bot/webhook', middleware(line_config), (req, res, next) => {
     res.sendStatus(200);
     console.log(req.body);
 
@@ -75,7 +75,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     text: "ビルマ語はミャンマーの旧名称でその地域で話されていることばです話者は5000万人ほどいます。"
                 }));
             }else{
-                ce_request.write(qs.stringify({ approx: 'W',
+                ce_request.write(stringify({ approx: 'W',
                   bitectMatch: 'or',
                   near: '10',
                   return: 'html',
@@ -84,11 +84,13 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                   type: 'bitext',
                   westernLanguage: 'english',
                   westernTarget: event.message.text }));
-                ce_request.end();
-                events_processed.push(bot.replyMessage(event.replyToken,{
-                  type: "text",
-                  text: example_sentences
-                }));
+                ce_request.end().then(()=>{
+                  console.log(example_sentences)
+                  events_processed.push(bot.replyMessage(event.replyToken,{
+                    type: "text",
+                    text: example_sentences
+                  }));
+                });
             }
         }
     });
