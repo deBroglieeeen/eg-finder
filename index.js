@@ -22,10 +22,10 @@ var http = require("http");
 
 var options = {
   "method": "POST",
-  "hostname": [
-    "sealang",
-    "net"
-  ],
+  // "hostname": [
+  //   "sealang",
+  //   "net"
+  // ],
   "path": [
     "pm",
     "bitext.pl"
