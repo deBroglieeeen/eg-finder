@@ -17,8 +17,8 @@ const bot = new line.Client(line_config);
 // -----------------------------------------------------------------------------
 let example_sentences = ""
 // -----------------------------------------------------------------------------
-// import { stringify } from "querystring";
-// import { request } from "http";
+import { stringify } from "querystring";
+import { request } from "http";
 
 var options = {
   "method": "POST",
