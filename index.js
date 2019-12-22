@@ -17,46 +17,46 @@ const bot = new line.Client(line_config);
 // -----------------------------------------------------------------------------
 let example_sentences = ""
 // -----------------------------------------------------------------------------
-var qs = require("querystring");
-var http = require("http");
+//var qs = require("querystring");
+// var http = require("http");
 
-var options = {
-  "method": "POST",
-  // "hostname": [
-  //   "sealang",
-  //   "net"
-  // ],
-  "path": [
-    "pm",
-    "bitext.pl"
-  ],
-  "headers": {
-    "Content-Type": "application/x-www-form-urlencoded",
-    //"User-Agent": "PostmanRuntime/7.20.1",
-    "Accept": "*/*",
-    "Cache-Control": "no-cache",
-    //"Postman-Token": "4700a0e6-91ef-4e95-bc4a-7d39c275166b,0d57394c-ea9a-47c8-bb2c-acf39ce12303",
-    "Host": "sealang.net",
-    "Accept-Encoding": "gzip, deflate",
-    "Content-Length": "129",
-    "Connection": "keep-alive",
-    "cache-control": "no-cache"
-  }
-};
+// var options = {
+//   "method": "POST",
+//   // "hostname": [
+//   //   "sealang",
+//   //   "net"
+//   // ],
+//   "path": [
+//     "pm",
+//     "bitext.pl"
+//   ],
+//   "headers": {
+//     "Content-Type": "application/x-www-form-urlencoded",
+//     //"User-Agent": "PostmanRuntime/7.20.1",
+//     "Accept": "*/*",
+//     "Cache-Control": "no-cache",
+//     //"Postman-Token": "4700a0e6-91ef-4e95-bc4a-7d39c275166b,0d57394c-ea9a-47c8-bb2c-acf39ce12303",
+//     "Host": "sealang.net",
+//     "Accept-Encoding": "gzip, deflate",
+//     "Content-Length": "129",
+//     "Connection": "keep-alive",
+//     "cache-control": "no-cache"
+//   }
+// };
 
-var ce_request = http.request(options, function (res) {
-  var chunks = [];
+// var ce_request = http.request(options, function (res) {
+//   var chunks = [];
 
-  res.on("data", function (chunk) {
-    chunks.push(chunk);
-  });
+//   res.on("data", function (chunk) {
+//     chunks.push(chunk);
+//   });
 
-  res.on("end", function () {
-    var body = Buffer.concat(chunks);
-    console.log(body.toString());
-    example_sentences = body.toString()
-  });
-});
+//   res.on("end", function () {
+//     var body = Buffer.concat(chunks);
+//     console.log(body.toString());
+//     example_sentences = body.toString()
+//   });
+// });
 
 // -----------------------------------------------------------------------------
 // ルーター設定
@@ -76,22 +76,68 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 }));
             }
             else{
-                ce_request.write(qs.stringify({ approx: 'W',
-                  bitectMatch: 'or',
-                  near: '10',
-                  return: 'html',
-                  seaLanguage: 'burmese',
-                  seaTarget: '',
-                  type: 'bitext',
-                  westernLanguage: 'english',
-                  westernTarget: event.message.text }));
-                ce_request.end().then(()=>{
-                  console.log(example_sentences)
-                  events_processed.push(bot.replyMessage(event.replyToken,{
-                    type: "text",
-                    text: example_sentences
-                  }));
-                });
+                // ce_request.write(qs.stringify({ approx: 'W',
+                //   bitectMatch: 'or',
+                //   near: '10',
+                //   return: 'html',
+                //   seaLanguage: 'burmese',
+                //   seaTarget: '',
+                //   type: 'bitext',
+                //   westernLanguage: 'english',
+                //   westernTarget: event.message.text }));
+                // ce_request.end().then(()=>{
+                //   console.log(example_sentences)
+                //   events_processed.push(bot.replyMessage(event.replyToken,{
+                //     type: "text",
+                //     text: example_sentences
+                //   }));
+                // });
+                   var request = require("request");
+
+                   var options = { method: 'POST',
+                     url: 'http://sealang.net/pm/bitext.pl',
+                     qs:
+                      { 'seaLanguage\t': 'burmese',
+                        type: 'bitext',
+                        westernLanguage: 'english',
+                        westernTarget: 'flow',
+                        bitextMatch: 'or',
+                        near: '10',
+                        approx: 'W',
+                        return: 'html',
+                        seaTarget: '',
+                        'seaLanguage%09': 'burmese' },
+                     headers:
+                      { 'cache-control': 'no-cache',
+                        Connection: 'keep-alive',
+                        'Content-Length': '129',
+                        'Accept-Encoding': 'gzip, deflate',
+                        Host: 'sealang.net',
+                        'Postman-Token': '4700a0e6-91ef-4e95-bc4a-7d39c275166b,35576d36-b581-4000-98f3-64afcb7022ed',
+                        'Cache-Control': 'no-cache',
+                        Accept: '*/*',
+                        'User-Agent': 'PostmanRuntime/7.20.1',
+                        'Content-Type': 'application/x-www-form-urlencoded' },
+                     form:
+                      { approx: 'W',
+                        bitectMatch: 'or',
+                        near: '10',
+                        return: 'html',
+                        seaLanguage: 'burmese',
+                        seaTarget: '',
+                        type: 'bitext',
+                        westernLanguage: 'english',
+                        westernTarget: 'flow' } };
+
+                   request(options, function (error, response, body) {
+                     if (error) throw new Error(error);
+                     console.log(body);
+                     events_processed.push(bot.replyMessage(event.replyToken,{
+                       type: "text",
+                       text: example_sentences
+                     }));
+                   });
+
             }
         }
     });
