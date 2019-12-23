@@ -96,6 +96,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                    const rp = require("request-promise");
                    const { JSDOM } = require("jsdom");
                    const Iconv = require("iconv").Iconv;
+                   const cheerio = require("cheerio")
 
 
                    var options = { method: 'POST',
@@ -182,6 +183,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                   rp(options_2)
                     .then((body) => {
                       console.log(body)
+                      const $ = cheerio.load(body)
+                      const sentence1 = $("cell").children().first().text().trim();
+                      //const sentence2 = $("cell").children().second().text().trim();
+                      events_processed.push(bot.replyMessage(event.replyToken, {
+                          type: "text",
+                          text: sentence1
+                      }));
+
                   }).catch((err) => {
                     console.error(err)
                   });
