@@ -201,19 +201,19 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         text: $("cell").children().first().text().trim()
                       }));
 
-                      // for(index = 1;index < 7; index++){
-                      //   events_processed.push(bot.replyMessage(event.replyToken, {
-                      //       type: "text",
-                      //       text: $(`cell:nth-child(${index})`).children()[index - 1].text().trim()
-                      //   }));
-                      // }
-                      $("cell").children().each((i,elem) =>{
+                      for(index = 1;index < 7; index++){
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
-                            text: $(this).text().trim()
+                            text: $("cell").children().eq(index).text().trim()
                         }));
-                      });
-                      console.log($("cell"))
+                      }
+                      // $("cell").children().each((i,elem) =>{
+                      //   events_processed.push(bot.replyMessage(event.replyToken, {
+                      //       type: "text",
+                      //       text: $(this).text().trim()
+                      //   }));
+                      // });
+                      //console.log($("cell"))
                       // $("cell").each((i,elem) => {
                       //   console.log(elem)
 
