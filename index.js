@@ -196,11 +196,12 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       //       text: $("cell").children().
                       //   }));
                       // }
-                      $("cell").children().each((i,elem) => {
+                      console.log($("cell"))
+                      $("cell").each((i,elem) => {
                         console.log(elem)
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
-                            text: elem.first().text().trim()
+                            text: elem.children().first().text().trim()
                         }));
 
                       });
