@@ -93,11 +93,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 //   }));
                 // });
                    const request = require("request");
-                   const { JSDOM } = require("jsdom")
+                   const rp = require("request-promise");
+                   const { JSDOM } = require("jsdom");
+                   const Iconv = require("iconv").Iconv;
+
 
                    var options = { method: 'POST',
                      url: 'http://sealang.net/pm/bitext.pl',
-                     encoding: null,
+                     encoding: "utf-8",
                      qs:
                       { 'seaLanguage\t': 'burmese',
                         type: 'bitext',
@@ -131,42 +134,57 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         westernLanguage: 'english',
                         westernTarget: event.message.text } };
 
-                   request(options, function (error, response, body) {
-                     if (error) throw new Error(error);
-                     try {
-                      //const dom = new JSDOM(body);
-                      const dom = JSDOM.fragment(body)
-                      console.log(response.text)
-                      //response.setEncoding("utf8")
-                      console.log(dom.firstChild.textContent.trim())
+                   var options_2 = { method: 'POST',
+                     url: 'http://sealang.net/pm/bitext.pl',
+                     encoding: "utf-8",
+                     qs:
+                      { 'seaLanguage\t': 'burmese',
+                        type: 'bitext',
+                        westernLanguage: 'english',
+                        westernTarget: event.message.text,
+                        bitextMatch: 'or',
+                        near: '10',
+                        approx: 'W',
+                        return: 'html',
+                        seaTarget: '',
+                        'seaLanguage%09': 'burmese' },
+                     headers:
+                      { 'cache-control': 'no-cache',
+                        Connection: 'keep-alive',
+                        'Content-Length': '129',
+                        Host: 'sealang.net',
+                        //'Postman-Token': '4700a0e6-91ef-4e95-bc4a-7d39c275166b,35576d36-b581-4000-98f3-64afcb7022ed',
+                        //'Cache-Control': 'no-cache',
+                        Accept: '*/*',
+                        //'User-Agent': 'PostmanRuntime/7.20.1',
+                        'Content-Type': 'application/x-www-form-urlencoded' },
+                     form:
+                      { approx: 'W',
+                        bitectMatch: 'or',
+                        near: '10',
+                        return: 'html',
+                        seaLanguage: 'burmese',
+                        seaTarget: '',
+                        type: 'bitext',
+                        westernLanguage: 'english',
+                        westernTarget: event.message.text } };
+
+                  //  request(options, function (error, response, body) {
+                  //    if (error) throw new Error(error);
+                  //    try {
+                  //     console.log(body)
+
+                  //    } catch (error) {
+                  //      console.error(error)
+                  //    }
+                  //    //console.log(body);
+                  //  });
+                  rp(options_2)
+                    .then((body) => {
                       console.log(body)
-                      // events_processed.push(bot.replyMessage(event.replyToken,{
-                      //   type: "text",
-                      //   text: String(body)
-                      // }));
-                      // console.log(body.textContent)
-                      // const b = dom.window.document.querySelectorAll("b");
-                      // console.log(b)
-                      // b.forEach(element => {
-                      //   console.log(element.textContent.trim());
-                      // });
-                      // const line1 = dom.window.document.querySelectorAll("cell").children[0].textContent.trim();
-                      // const line2 = dom.window.document.querySelectorAll("cell").children[1].textContent.trim();
-                      // events_processed.push(bot.replyMessage(event.replyToken,{
-                      //   type: "text",
-                      //   text: line1
-                      // }));
-                      // events_processed.push(bot.replyMessage(event.replyToken,{
-                      //   type: "text",
-                      //   text: line2
-                      // }));
-                      // console.log(line1)
-                      // console.log(line2)
-                     } catch (error) {
-                       console.error(error)
-                     }
-                     //console.log(body);
-                   });
+                  }).catch((err) => {
+                    console.error(err)
+                  });
 
             }
         }
