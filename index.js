@@ -191,7 +191,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         console.log(key,sentences[key].text().trim());
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
-                            text: sentence[key].text().trim()
+                            text: sentences[key].text().trim()
                         }));
                       }
                       //const sentence2 = $("cell").children().second().text().trim();
