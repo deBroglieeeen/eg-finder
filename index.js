@@ -97,6 +97,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 
                    var options = { method: 'POST',
                      url: 'http://sealang.net/pm/bitext.pl',
+                     encoding: null,
                      qs:
                       { 'seaLanguage\t': 'burmese',
                         type: 'bitext',
@@ -136,7 +137,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       //const dom = new JSDOM(body);
                       const dom = JSDOM.fragment(body)
                       console.log(response.text)
-                      response.setEncoding("utf8")
+                      //response.setEncoding("utf8")
                       console.log(dom.firstChild.textContent.trim())
                       console.log(body)
                       // events_processed.push(bot.replyMessage(event.replyToken,{
