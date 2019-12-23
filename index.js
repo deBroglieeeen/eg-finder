@@ -140,16 +140,16 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       //   type: "text",
                       //   text: b.innerHTML
                       // }));
+                      events_processed.push(bot.replyMessage(event,replyToken,{
+                        type: "text",
+                        text: String(body)
+                      }));
                       console.log(body.textContent)
                       const b = dom.window.document.querySelectorAll("b");
                       console.log(b)
                       b.forEach(element => {
                         console.log(element.textContent.trim());
                       });
-                      events_processed.push(bot.replyMessage(event,replyToken,{
-                        type: "text",
-                        text: body.textContent
-                      }));
                       const line1 = dom.window.document.querySelectorAll("cell").children[0].textContent.trim();
                       const line2 = dom.window.document.querySelectorAll("cell").children[1].textContent.trim();
                       events_processed.push(bot.replyMessage(event.replyToken,{
