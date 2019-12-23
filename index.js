@@ -201,15 +201,20 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       //   type: "text",
                       //   text: $("cell").children().first().text().trim()
                       // }));
-
-                      //for(index = 0;index < $("row").children.length; index++){
-                      for(index=0;index < 4;index++){
+                      let sentence = `${event.message.text}の例文は\n`
+                      for(index = 0;index < $("row").children.length; index++){
+                      //for(index=0;index < 4;index++){
                         console.log($("row").children().eq(index).text().trim())
-                        events_processed.push(bot.replyMessage(event.replyToken, {
-                            type: "text",
-                            text: $("row").children().eq(index).text().trim()
-                        }));
+                        // events_processed.push(bot.replyMessage(event.replyToken, {
+                        //     type: "text",
+                        //     text: $("row").children().eq(index).text().trim()
+                        // }));
+                        sentence += `${$("row").children().eq(index).text().trim()}\n`
                       }
+                      events_processed.push(bot.replyMessage(event.replyToken, {
+                          type: "text",
+                          text: sentence
+                      }));
                       // $("cell").children().each((i,elem) =>{
                       //   events_processed.push(bot.replyMessage(event.replyToken, {
                       //       type: "text",
