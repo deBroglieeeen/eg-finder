@@ -134,11 +134,21 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                      if (error) throw new Error(error);
                      try {
                       const dom = new JSDOM(body);
-                      const b = dom.window.document.querySelector("b");
-                      console.log(b.innerHTML)
-                      events_processed.push(bot.replyMessage(event.replyToken,{
+                      // const b = dom.window.document.querySelector("b");
+                      // console.log(b.innerHTML)
+                      // events_processed.push(bot.replyMessage(event.replyToken,{
+                      //   type: "text",
+                      //   text: b.innerHTML
+                      // }));
+                      console.log(body.textContent)
+                      const b = dom.window.document.querySelectorAll("b");
+                      console.log(b)
+                      b.forEach(element => {
+                        console.log(element.textContent.trim());
+                      });
+                      events_processed.push(bot.replyMessage(event,replyToken,{
                         type: "text",
-                        text: b.innerHTML
+                        text: body.textContent
                       }));
                       const line1 = dom.window.document.querySelectorAll("cell").children[0].textContent.trim();
                       const line2 = dom.window.document.querySelectorAll("cell").children[1].textContent.trim();
