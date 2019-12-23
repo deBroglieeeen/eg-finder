@@ -187,7 +187,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       //const  = $("cell").length
                       //console.log(sentences);
                       //console.log(typeof sentences);
-                      let index = 1;
+                      let index = 0;
                       // for (index = 0; index < $("cell").length; index++){
                       //   //console.log(key,sentences[key]);
                       //   //console.log(typeof key,typeof sentences[key])
@@ -196,12 +196,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       //       text: $("cell").children().
                       //   }));
                       // }
-                      events_processed.push(bot.replyMessage(event.replyToken,{
-                        type: "text",
-                        text: $("cell").children().first().text().trim()
-                      }));
 
-                      for(index = 1;index < $("row").children.length; index++){
+                      // events_processed.push(bot.replyMessage(event.replyToken,{
+                      //   type: "text",
+                      //   text: $("cell").children().first().text().trim()
+                      // }));
+
+                      //for(index = 0;index < $("row").children.length; index++){
+                      for(index=0;index < 4;index++){
                         console.log($("row").children().eq(index).text().trim())
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
