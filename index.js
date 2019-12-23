@@ -188,7 +188,8 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       console.log(sentences);
                       console.log(typeof sentences);
                       for (let key of Object.keys(sentences)){
-                        console.log(key,sentences[key].text().trim());
+                        console.log(key,sentences[key]);
+                        console.log(typeof key,typeof sentences[key])
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
                             text: sentences[key].text().trim()
