@@ -185,12 +185,15 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       console.log(body)
                       const $ = cheerio.load(body)
                       const sentences = $("cell").children();
-                      sentences.forEach(element => {
+                      console.log(sentences);
+                      console.log(typeof sentences);
+                      for (let sentence of sentences){
+                        console.log(sentence.text().trim());
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
-                            text: element.text().trim()
+                            text: sentence.text().trim()
                         }));
-                      });
+                      }
                       //const sentence2 = $("cell").children().second().text().trim();
 
                   }).catch((err) => {
