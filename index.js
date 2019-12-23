@@ -92,11 +92,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 //     text: example_sentences
                 //   }));
                 // });
-                   const request = require("request");
+                   //const request = require("request");
                    const rp = require("request-promise");
                    const { JSDOM } = require("jsdom");
-                   const Iconv = require("iconv").Iconv;
-                   const cheerio = require("cheerio")
+                   //const Iconv = require("iconv").Iconv;
+                   //const cheerio = require("cheerio")
 
 
                    var options = { method: 'POST',
@@ -196,15 +196,16 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       //   }));
                       // }
                       const dom = new JSDOM(body);
-                      const sentences = dom.window.document.querySelectorAll("cell");
+                      const sentences = dom.window.document.querySelectorAll("cell").children;
 
                       let index = 0
                       for (index = 0; index < sentences.length; index++){
+                        console.log(`the number is ${sentences.length}`)
                         console.log(sentences[index]);
                         console.log(typeof sentences[index])
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
-                            text: sentences[index].firstChild().text().trim()
+                            text: sentences[index].firstChild().textContent().trim()
                         }));
                       }
                       //const sentence2 = $("cell").children().second().text().trim();
