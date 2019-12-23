@@ -184,12 +184,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                     .then((body) => {
                       console.log(body)
                       const $ = cheerio.load(body)
-                      const sentence1 = $("cell").children().first().text().trim();
+                      const sentences = $("cell").children();
+                      sentences.forEach(element => {
+                        events_processed.push(bot.replyMessage(event.replyToken, {
+                            type: "text",
+                            text: element.text().trim()
+                        }));
+                      });
                       //const sentence2 = $("cell").children().second().text().trim();
-                      events_processed.push(bot.replyMessage(event.replyToken, {
-                          type: "text",
-                          text: sentence1
-                      }));
 
                   }).catch((err) => {
                     console.error(err)
