@@ -187,7 +187,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       //const  = $("cell").length
                       //console.log(sentences);
                       //console.log(typeof sentences);
-                      let index = 0;
+                      let index = 1;
                       // for (index = 0; index < $("cell").length; index++){
                       //   //console.log(key,sentences[key]);
                       //   //console.log(typeof key,typeof sentences[key])
@@ -196,15 +196,22 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       //       text: $("cell").children().
                       //   }));
                       // }
-                      console.log($("cell"))
-                      $("cell").each((i,elem) => {
-                        console.log(elem)
+                      events_processed.push(bot.replyMessage(event.replyToken,{
+                        type: "text",
+                        text: $("cell").children().first().text().trim()
+                      }));
+
+                      for(index = 1;index < 7; index++){
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
-                            text: elem.children().first().text().trim()
+                            text: $(`cell:nth-child(${index})`).children().first().text().trim()
                         }));
+                      }
+                      console.log($("cell"))
+                      // $("cell").each((i,elem) => {
+                      //   console.log(elem)
 
-                      });
+                      // });
                       // const dom = new JSDOM(body);
                       // const sentences = dom.window.document.querySelectorAll("cell").children;
 
