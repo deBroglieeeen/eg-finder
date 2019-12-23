@@ -201,7 +201,8 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                         text: $("cell").children().first().text().trim()
                       }));
 
-                      for(index = 1;index < 20; index++){
+                      for(index = 1;index < 12; index++){
+                        console.log($("cell").children().eq(index).text().trim())
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
                             text: $("cell").children().eq(index).text().trim()
