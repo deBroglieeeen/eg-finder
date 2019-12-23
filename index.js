@@ -94,9 +94,9 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 // });
                    //const request = require("request");
                    const rp = require("request-promise");
-                   const { JSDOM } = require("jsdom");
+                   //const { JSDOM } = require("jsdom");
                    //const Iconv = require("iconv").Iconv;
-                   //const cheerio = require("cheerio")
+                   const cheerio = require("cheerio")
 
 
                    var options = { method: 'POST',
@@ -183,31 +183,40 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                   rp(options_2)
                     .then((body) => {
                       console.log(body)
-                      // const $ = cheerio.load(body)
-                      // const sentences = $("cell").children();
-                      // console.log(sentences);
-                      // console.log(typeof sentences);
-                      // for (let key of Object.keys(sentences)){
-                      //   console.log(key,sentences[key]);
-                      //   console.log(typeof key,typeof sentences[key])
+                      const $ = cheerio.load(body)
+                      //const  = $("cell").length
+                      //console.log(sentences);
+                      //console.log(typeof sentences);
+                      let index = 0;
+                      // for (index = 0; index < $("cell").length; index++){
+                      //   //console.log(key,sentences[key]);
+                      //   //console.log(typeof key,typeof sentences[key])
                       //   events_processed.push(bot.replyMessage(event.replyToken, {
                       //       type: "text",
-                      //       text: sentences[key].text().trim()
+                      //       text: $("cell").children().
                       //   }));
                       // }
-                      const dom = new JSDOM(body);
-                      const sentences = dom.window.document.querySelectorAll("cell").children;
-
-                      let index = 0
-                      for (index = 0; index < sentences.length; index++){
-                        console.log(`the number is ${sentences.length}`)
-                        console.log(sentences[index]);
-                        console.log(typeof sentences[index])
+                      $("cell").children().each((i,elem) => {
+                        console.log(elem)
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
-                            text: sentences[index].firstChild().textContent().trim()
+                            text: elem.first().text().trim()
                         }));
-                      }
+
+                      });
+                      // const dom = new JSDOM(body);
+                      // const sentences = dom.window.document.querySelectorAll("cell").children;
+
+                      // let index = 0
+                      // for (index = 0; index < sentences.length; index++){
+                      //   console.log(`the number is ${sentences.length}`)
+                      //   console.log(sentences[index]);
+                      //   console.log(typeof sentences[index])
+                      //   events_processed.push(bot.replyMessage(event.replyToken, {
+                      //       type: "text",
+                      //       text: sentences[index].firstChild().textContent().trim()
+                      //   }));
+                      // }
                       //const sentence2 = $("cell").children().second().text().trim();
 
                   }).catch((err) => {
