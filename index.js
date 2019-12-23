@@ -72,7 +72,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 // replyMessage()で返信し、そのプロミスをevents_processedに追加。
                 events_processed.push(bot.replyMessage(event.replyToken, {
                     type: "text",
-                    text: "ビルマ語はミャンマーの旧名称でその地域で話されていることばです話者は5000万人ほどいます。"
+                    text: "ビルマはミャンマーの旧名称で,myanmarで話されていることばです話者は5000万人ほどいます。"
                 }));
             }
             else{
@@ -133,8 +133,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                    request(options, function (error, response, body) {
                      if (error) throw new Error(error);
                      try {
-                      const dom = new JSDOM(body);
-
+                      //const dom = new JSDOM(body);
+                      const dom = JSDOM.fragment(body)
+                      console.log(response.text)
+                      response.setEncoding("utf8")
+                      console.log(dom.firstChild.textContent.trim())
                       console.log(body)
                       // events_processed.push(bot.replyMessage(event.replyToken,{
                       //   type: "text",
