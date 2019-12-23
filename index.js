@@ -187,11 +187,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                       const sentences = $("cell").children();
                       console.log(sentences);
                       console.log(typeof sentences);
-                      for (let sentence of sentences){
-                        console.log(sentence.text().trim());
+                      for (let keys of Object.keys(sentences)){
+                        console.log(key,sentences[key].text().trim());
                         events_processed.push(bot.replyMessage(event.replyToken, {
                             type: "text",
-                            text: sentence.text().trim()
+                            text: sentence[key].text().trim()
                         }));
                       }
                       //const sentence2 = $("cell").children().second().text().trim();
